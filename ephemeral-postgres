@@ -62,12 +62,6 @@ if [[ -z $db_trade_name ]]; then
     exit 1
 fi
 
-declare -i internal_port=${port_numbers[$db_name]}
-declare -i host_port=$internal_port
-while port_active "$host_port"; do
-    host_port+=1
-done
-
 for arg in "$@"; do
     case $arg in
         -f | --force )
@@ -108,6 +102,12 @@ HELP
             identifier=$arg
             ;;
     esac
+done
+
+declare -i internal_port=${port_numbers[$db_name]}
+declare -i host_port=$internal_port
+while port_active "$host_port"; do
+    host_port+=1
 done
 
 if [[ -z $identifier ]]; then
